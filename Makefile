@@ -5,11 +5,11 @@ down:
 	docker compose down
 
 start:
-	docker compose up
+	docker compose up -d
 
 restart: down start
 
-up: build start migrate statics elastic
+up: build start migrate statics
 
 statics:
 	docker exec -ti backend python3 manage.py collectstatic --noinput
@@ -22,7 +22,6 @@ admin:
 
 migrations:
 	docker compose run --rm api python manage.py makemigrations
-
 
 deps:
 	docker compose run --rm api poetry install
@@ -38,6 +37,5 @@ coverage: build migrate
 	docker compose run --rm api coverage report
 	docker compose run --rm api coverage xml
 
-elastic:
-	docker-compose exec api python3 manage.py search_index --populate
+
 
