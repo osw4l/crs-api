@@ -1,2 +1,7 @@
-# Beer tap dispenser API
+# CRS-API
+
+Requerimientos
+
+- docker, docker compose
+- SO: Unix, Linux o Mac
 
