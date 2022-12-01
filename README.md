@@ -131,6 +131,8 @@ Estas son las tests que tiene el código actualmente
 ![Captura de Pantalla 2022-12-01 a la(s) 12 19 04 a m](https://user-images.githubusercontent.com/8086136/204971830-c7ba2a16-548a-439f-973a-53e46ef2d59c.png)
 
 ### cosas que hubiese querido hacer
+- mejorar la estructura de los serializadores
+- optimizar las queries
 - testear todos los serializer
 - testear todas las vistas
 - testear todos los modelos
