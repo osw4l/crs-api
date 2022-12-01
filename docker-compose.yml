@@ -1,0 +1,59 @@
+version: '3.9'
+
+services:
+    api:
+        container_name: backend
+        command: sh -c "python3 manage.py search_index --populate && python manage.py runserver 0.0.0.0:6060"
+        depends_on:
+            postgres-skeleton-db:
+                condition: service_healthy
+        build:
+            context: .
+            dockerfile: docker/Dockerfile
+        environment:
+            PYTHONUNBUFFERED: 1
+        env_file: dev.env
+        volumes:
+            - "${PWD}:/opt/app"
+        ports:
+            - "6060:6060"
+        networks:
+            internal-net:
+    elastic:
+        image: elasticsearch:7.8.1
+        command: [ "elasticsearch", "-Elogger.level=WARN"]
+        healthcheck:
+            test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        environment:
+            - bootstrap.memory_lock=true
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+            - discovery.type=single-node
+        networks:
+            - internal-net
+        logging:
+            driver: 'none'
+
+    postgres-skeleton-db:
+        container_name: postgres-skeleton-db
+        image: postgres:13.4-alpine
+        restart: on-failure
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        volumes:
+            - crs-volume:/var/lib/postgresql/data
+        env_file: dev.env
+        networks:
+            internal-net:
+
+volumes:
+    crs-volume:
+
+networks:
+    internal-net:
+        name: rv-skeleton-net
