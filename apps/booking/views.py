@@ -2,7 +2,6 @@ from django.http import Http404
 from rest_framework import generics
 from rest_framework.response import Response
 
-from .decorators import query_debugger
 from .serializers import AvailabilitySerializer
 from .models import Inventory, Hotel
 
@@ -20,7 +19,6 @@ class AvailabilityView(generics.GenericAPIView):
         except Hotel.DoesNotExist:
             raise Http404
 
-    @query_debugger
     def get(self, request, *args, **kwargs):
         """
         API endpoint for get the inventory of rooms in a given date range and hotel

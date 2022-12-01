@@ -66,7 +66,7 @@ class Room(BaseHotelItem):
         verbose_name_plural = 'Rooms'
 
     def __str__(self):
-        return f'{self.hotel} - {self.name} - {self.code}'
+        return f'{self.id} - {self.hotel} - {self.name} - {self.code}'
 
 
 class Rate(BaseHotelItem):
